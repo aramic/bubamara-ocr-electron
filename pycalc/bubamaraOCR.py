@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 
 abeceda = ['A', 'B', 'C', 'Č', 'Ć', 'D', 'DŽ', 'Đ', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'LJ', 'M', 'N', 'NJ', 'O', 'P', 'R', 'S', 'Š', 'T', 'U', 'V', 'Z', 'Ž']
-imgTrain = '/Users/adrianaramic/Code/bubamara-ocr/pycalc/tablet.jpg'
+imgTrain = '/Users/adrianaramic/Code/bubamara-ocr-electron/pycalc/tablet.jpg'
 
 #pixel size for input image:
 xPixels = 100L

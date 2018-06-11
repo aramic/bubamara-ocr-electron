@@ -16,7 +16,9 @@ const {dialog} = require('electron').remote
 const selectFile = document.getElementById('select-file')
 
 selectFile.addEventListener('click',function(){
-    dialog.showOpenDialog(function (fileNames) {
+    dialog.showOpenDialog({ filters: [
+        { name: 'Images', extensions: ['jpg', 'png', 'gif'] }]}, 
+        function (fileNames) {
         if(fileNames === undefined){
             console.log("No file selected")
         }else{
