@@ -7,6 +7,8 @@
     "start": "electron ."
   },
   "dependencies": {
+    "electron-window-manager": "^1.0.6",
+    "select-random-file": "^1.1.0",
     "zerorpc": "^0.9.7"
   },
   "keywords": [
