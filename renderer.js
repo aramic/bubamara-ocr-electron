@@ -11,9 +11,11 @@ client.connect("tcp://127.0.0.1:4242")
 
 const path = require('path')
 const fs = require('fs')
-var selectedImg = ''
+const remote = require('electron').remote;
+const BrowserWindow = remote.BrowserWindow;
 const {dialog} = require('electron').remote
 const selectFile = document.getElementById('select-file')
+const key = document.getElementById('key')
 
 selectFile.addEventListener('click',function(){
     dialog.showOpenDialog({ filters: [
@@ -25,8 +27,8 @@ selectFile.addEventListener('click',function(){
             document.getElementById("select-file").value = fileNames[0];
             readFile(fileNames[0])
         }
-    }); 
-},false);
+    })
+},false)
 
 function readFile(filepath) {
     fs.readFile(filepath, 'utf-8', function (err, data) {
@@ -44,6 +46,20 @@ function readFile(filepath) {
         		console.log(res)
         		console.log(res.toString('utf8'));
         	}
-        });
-    });
+        })
+    })
 }
+
+key.addEventListener('click', function() {
+    let keyWin = new BrowserWindow({show: false})
+    keyWin.loadURL(require('url').format({
+        pathname: path.join(__dirname, 'key.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+    
+    keyWin.once('ready-to-show', () => {
+        keyWin.show()
+    })
+
+})

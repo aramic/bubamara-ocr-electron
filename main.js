@@ -7,7 +7,7 @@ const path = require('path')
 
 let mainWindow = null
 const createWindow = () => {
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 480, height: 480})
   mainWindow.loadURL(require('url').format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
@@ -92,7 +92,7 @@ const selectPort = () => {
 
 const createPyProc = () => {
   let port = '' + selectPort()
-  let script = path.join(__dirname, 'pycalc', 'api.py')
+  let script = path.join(__dirname, 'python', 'api.py')
   pyProc = require('child_process').spawn('python', [script, port])
   if (pyProc != null) {
     console.log('child process success')
