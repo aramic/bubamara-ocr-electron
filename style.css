@@ -1,0 +1,48 @@
+body {
+	background: #ff0000;
+	font-family: Arial;
+	font-weight: 600;
+	font-size: 14px;
+	padding: 0;
+	margin: 0;
+}
+
+.welcome,
+.choose-image,
+.key {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: 0.2s ease;
+}
+
+.welcome {
+	background: #888;
+	height: 12vh;
+}
+
+.choose-image {
+	height: 80vh;
+}
+
+.welcome:hover {
+	background: #000;
+	color: #888;
+}
+
+.key:hover {
+	background: #000;
+	color: #ccc;
+}
+
+.choose-image:hover {
+	background: #000;
+	color: #ff0000;
+}
+
+.key {
+	background: #fff;
+	height: 8vh;
+}

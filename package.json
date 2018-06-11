@@ -1,0 +1,22 @@
+{
+  "name": "bubamara-ocr",
+  "version": "1.0.0",
+  "description": "Image interpretation through bubamare",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "zerorpc": "^0.9.7"
+  },
+  "keywords": [
+    "Bubamara",
+    "OCR"
+  ],
+  "author": "Adriana Ramic",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "1.7.6",
+    "electron-packager": "^9.0.1"
+  }
+}
