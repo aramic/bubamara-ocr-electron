@@ -1,0 +1,233 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*-- Begin --*/
+body {
+	perspective: 800px;
+	font-size: 8vh;
+	font-family: arial, sans-serif;
+	overflow: hidden;
+	background: #000;
+	color: #fff;
+}
+.segment {
+	width: calc(100vw/6);
+	height: calc(100vh/5);
+	float: left;
+	position: relative;
+}
+
+.front, .back {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+ 	backface-visibility: hidden;
+ 	-webkit-transition: .75s ease all;	
+ 	-o-transition: .75s ease all;
+ 	-moz-transition: .75s ease all;
+ 	transition: .75s ease all;
+}
+
+.front {
+	background-size: cover;
+	background-position: center center;
+}
+
+.back {
+	/*transform: rotateY( 180deg );*/
+	text-align: center;
+	line-height: 20vh;
+	opacity: 0;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently */	
+}
+
+.segment.flipped .front {
+	/*transform: rotateY( 180deg );*/
+	opacity: 0;
+}
+
+.segment.flipped .back {
+	/*transform: rotateY( 180deg );*/
+	opacity: 1;
+}
+
+.segment:hover .front {
+    opacity: 0;
+}
+
+.segment:hover .back {
+    opacity: 1;
+}
+
+.segment.ladybug-1 .front {
+	background-image: url('../img/key/01.jpg');
+}
+
+.segment.ladybug-2 .front {
+	background-image: url('../img/key/02.jpg');
+}
+
+.segment.ladybug-3 .front {
+	background-image: url('../img/key/03.jpg');
+}
+
+.segment.ladybug-4 .front {
+	background-image: url('../img/key/04.jpg');
+}
+
+.segment.ladybug-5 .front {
+	background-image: url('../img/key/05.jpg');
+}
+
+.segment.ladybug-6 .front {
+	background-image: url('../img/key/06.jpg');
+}
+
+.segment.ladybug-7 .front {
+	background-image: url('../img/key/07.jpg');
+}
+
+.segment.ladybug-8 .front {
+	background-image: url('../img/key/08.jpg');
+}
+
+.segment.ladybug-9 .front {
+	background-image: url('../img/key/09.jpg');
+}
+
+.segment.ladybug-10 .front {
+	background-image: url('../img/key/10.jpg');
+}
+
+.segment.ladybug-11 .front {
+	background-image: url('../img/key/11.jpg');
+}
+
+.segment.ladybug-12 .front {
+	background-image: url('../img/key/12.jpg');
+}
+
+.segment.ladybug-13 .front {
+	background-image: url('../img/key/13.jpg');
+}
+
+.segment.ladybug-14 .front {
+	background-image: url('../img/key/14.jpg');
+}
+
+.segment.ladybug-15 .front {
+	background-image: url('../img/key/15.jpg');
+}
+
+.segment.ladybug-16 .front {
+	background-image: url('../img/key/16.jpg');
+}
+
+.segment.ladybug-17 .front {
+	background-image: url('../img/key/17.jpg');
+}
+
+.segment.ladybug-18 .front {
+	background-image: url('../img/key/18.jpg');
+}
+
+.segment.ladybug-19 .front {
+	background-image: url('../img/key/19.jpg');
+}
+
+.segment.ladybug-20 .front {
+	background-image: url('../img/key/20.jpg');
+}
+
+.segment.ladybug-21 .front {
+	background-image: url('../img/key/21.jpg');
+}
+
+.segment.ladybug-22 .front {
+	background-image: url('../img/key/22.jpg');
+}
+
+.segment.ladybug-23 .front {
+	background-image: url('../img/key/23.jpg');
+}
+
+.segment.ladybug-24 .front {
+	background-image: url('../img/key/24.jpg');
+}
+
+.segment.ladybug-25 .front {
+	background-image: url('../img/key/25.jpg');
+}
+
+.segment.ladybug-26 .front {
+	background-image: url('../img/key/26.jpg');
+}
+
+.segment.ladybug-27 .front {
+	background-image: url('../img/key/27.jpg');
+}
+
+.segment.ladybug-28 .front {
+	background-image: url('../img/key/28.jpg');
+}
+
+.segment.ladybug-29 .front {
+	background-image: url('../img/key/29.jpg');
+}
+
+.segment.ladybug-30 .front {
+	background-image: url('../img/key/30.jpg');
+}
