@@ -16,6 +16,7 @@ body {
 	align-items: center;
 	cursor: pointer;
 	transition: 0.2s ease;
+	user-select: none;
 }
 
 #welcome {
