@@ -11,7 +11,10 @@ const createWindow = () => {
   mainWindow.loadURL(require('url').format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true
+    slashes: true,
+    webPreferences: {
+      devTools: false
+    }
   }))
   mainWindow.webContents.openDevTools()
   mainWindow.on('closed', () => {

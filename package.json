@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "electron-window-manager": "^1.0.6",
+    "gulp": "^4.0.0",
     "select-random-file": "^1.1.0",
     "zerorpc": "^0.9.7"
   },
@@ -19,6 +20,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "1.7.6",
-    "electron-packager": "^9.0.1"
+    "electron-packager": "^9.0.1",
+    "jquery": "^3.3.1"
   }
 }

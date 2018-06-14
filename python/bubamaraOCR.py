@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 
 abeceda = ['A', 'B', 'C', 'Č', 'Ć', 'D', 'DŽ', 'Đ', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'LJ', 'M', 'N', 'NJ', 'O', 'P', 'R', 'S', 'Š', 'T', 'U', 'V', 'Z', 'Ž']
-imgTrain = '/Users/adrianaramic/Code/bubamara-ocr-electron/assets/img/calibration/tablet.jpg'
+imgTrain = os.path.abspath('./assets/img/calibration/tablet.jpg')
 
 #pixel size for input image:
 xPixels = 100L
@@ -70,7 +70,7 @@ def bubamaraGen(testImage):
     s += abeceda[item[0]] + " "
   
     #make new directory for images 
-  imagesPath = r'/Users/adrianaramic/Code/bubamara-ocr-electron/python/cache/' + input_name
+  imagesPath = os.path.abspath('./python/cache/' + input_name)
   if not os.path.exists(imagesPath):
     os.makedirs(imagesPath)
   

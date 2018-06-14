@@ -12,6 +12,7 @@ client.connect("tcp://127.0.0.1:4242")
 const path = require('path')
 const fs = require('fs')
 const remote = require('electron').remote;
+const electron = require('electron')
 const BrowserWindow = remote.BrowserWindow;
 const {dialog} = require('electron').remote
 const selectFile = document.getElementById('select-file')
@@ -32,23 +33,20 @@ selectFile.addEventListener('click',function(){
 },false)
 
 function readFile(filepath) {
-    //console.log("readFile started. filepath=" + filepath )        
     fs.readFile(filepath, 'utf-8', function (err, data) {
         if(err){
             alert("An error ocurred reading the file :" + err.message)
             return
         }
-        //selectFile.innerHTML = "You have selected: " + filepath;
-        //bubamaraGen(calibration, filepath)
+        selectFile.classList.add('loading')
+        selectFile.innerHTML = "Loading <span class=\'ellipses\'><span>.</span><span>.</span><span>.</span></span>";
 
         client.invoke("bubamaraGen", filepath, (error, res) => {
         	if(error) {
         		console.error(error)
         	} else {
-        		//console.log(res)
         		output = res.toString('utf8')
                 let inputImg = filepath
-                //console.log(output)
                 formatInterp(inputImg, output)
         	}
         })
@@ -56,7 +54,6 @@ function readFile(filepath) {
 }
 
 function formatInterp(inputImg, output) {
-    //console.log("formatInterp started. output=" + output )    
 
     let interpArray = output.split(' ')
     let interpretation = ''
@@ -68,16 +65,11 @@ function formatInterp(inputImg, output) {
         let letter = interpArray[i]
         let cardDir = path.resolve(__dirname, './assets/img/cards/' + letter + '/')   
         let sectImg = path.resolve(__dirname, './python/cache/' + fileTitle + '/' + i + '.jpg')
-        console.log(sectImg)
 
         interpretation += '<div class=\'letter ' + letter + '\'>' + letter + '<div class=\'subworld\'><img src=\'' + randomImage(cardDir) + '\'><div class=\'initial\'>' + letter + '</div><div class=\'bubamara\'></div><div class=\'section\'><img src=\'' + sectImg + '\'></div></div></div> '
         if( i == interpArray.length - 1 ) {
-            //console.log(interpretation)
             makeInterpWin(fileTitle, interpretation)
         }
-        //console.log("interpretation is " + interpretation)
-        //outputArray.push(associateImage(letter, cardDir, letterMeta))
-        //console.log("interpretation is " + interpretation + "at index " + i)
     }
 
 }
@@ -90,39 +82,127 @@ function randomImage(dir) {
     return dirs[Math.floor(Math.random() * (dirs.length-1))]
 }
 
+function randomScreenPosition(winWidth, winHeight) {
+    const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+
+    let maxX = width - winWidth
+    let maxY = height - winHeight
+
+    let randomX = Math.floor(Math.random() * (maxX - 1))
+    let randomY = Math.floor(Math.random() * (maxY - 1))
+    return {randomX, randomY}
+}
+
 /* Display the interpretation */
 function makeInterpWin(fileTitle, interpretation) {
+    const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+
+    let maxX = width - 640
+    let maxY = height - 440
+
+    let randomX = Math.floor(Math.random() * (maxX - 1))
+    let randomY = Math.floor(Math.random() * (maxY - 1))
 
     let winTitle = "Interpretation of " + fileTitle
     let interpWin = new BrowserWindow({
         show: false, 
         title: winTitle,
         width: 640,
-        height: 440
+        height: 440,
+        x: randomX,
+        y: randomY
     })
+
+
     interpWin.loadURL(require('url').format({
         pathname: path.join(__dirname, 'interpretation.html'),
         protocol: 'file:',
         slashes: true
     }))
 
-    //console.log(interpretation) 
-
     interpWin.webContents.executeJavaScript(`
         document.getElementById("interpretation").innerHTML += "${interpretation}"
     `)
 
+
     interpWin.once('ready-to-show', () => {
         interpWin.show()
+        selectFile.innerHTML = "Choose image"
+        selectFile.classList.remove('loading')
     })
+
+    letterNavigate(interpWin);
+
+}
+
+/* Navigate through the letters */
+function letterNavigate(win) {
+    win.webContents.executeJavaScript(`
+        let letters = document.getElementsByClassName('letter')
+        letters[0].classList.add('active')
+
+        for (let i = 0; i < letters.length; i++) {
+            letters[i].addEventListener('mouseover', function() {
+                let active = document.getElementsByClassName('active')
+                active[0].classList.remove('active')                                
+                letters[i].classList.add('active')
+            })
+        }
+
+        window.addEventListener('keydown', function(e) {
+            switch(e.which) {
+                case 37: // left
+
+                var index = 0;
+                for (let i = 0; i < letters.length; i++) {
+                    if( letters[i].classList.contains('active') ) {
+                        index = i
+                    }
+                }
+                letters[index].classList.remove('active')                                
+                letters[index-1].classList.add('active')                                                
+
+                break;
+
+                case 39: // right
+
+                var index = 0;
+                for (let i = 0; i < letters.length; i++) {
+                    if( letters[i].classList.contains('active') ) {
+                        index = i
+                    }
+                }
+                letters[index].classList.remove('active')                                
+                letters[index+1].classList.add('active')                                                
+
+                break;
+
+                default: return;
+            }
+            e.preventDefault();
+
+        })
+
+    `)
 }
 
 /* Display the key */
 key.addEventListener('click', function() {
+
+    const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+
+    let maxX = width - 640
+    let maxY = height - 440
+
+    let randomX = Math.floor(Math.random() * (maxX - 1))
+    let randomY = Math.floor(Math.random() * (maxY - 1))
+
     let keyWin = new BrowserWindow({
         show: false,
-        width: 400,
-        height: 300
+        width: 600,
+        height: 400,
+        x: randomX,
+        y: randomY
     })
     keyWin.loadURL(require('url').format({
         pathname: path.join(__dirname, 'key.html'),
