@@ -39,7 +39,7 @@ def bubamaraGen(testImage):
       # resize image
       input_img = cv2.resize(input_img, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
 
-  # only shrink if img is bigger than required
+  # only upscale if img is smaller than required
   if yPixels > input_img.shape[1] or xPixels > input_img.shape[0]:
       # get scaling factor
       scaling_factor = float(input_img.shape[1]) / yPixels
