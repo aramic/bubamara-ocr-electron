@@ -10,8 +10,8 @@ imgTrain = os.path.abspath('./assets/img/calibration/tablet.jpg')
 xPixels = 100L
 yPixels = 100L
 
-maxWidth = 4000L
-maxHeight = 2000L
+maxWidth = 5000L
+maxHeight = 5000L
 
 def bubamaraGen(testImage):
 

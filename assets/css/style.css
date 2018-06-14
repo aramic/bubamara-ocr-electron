@@ -25,6 +25,8 @@ body {
 	cursor: pointer;
 	transition: 0.2s ease;
 	user-select: none;
+	padding: 20px;
+	text-align: center;
 }
 
 #welcome {
@@ -109,13 +111,12 @@ body {
 	color: #ff0000;
 }
 
-.letter.active .subworld {
+.letter.active #subworld {
 	opacity: 1;
 }
 
-.subworld {
+#subworld {
 	position: fixed;
-	opacity: 0;
 	left: 50vw;
 	top: 0;
 	pointer-events: none;
@@ -125,14 +126,14 @@ body {
 	transition: opacity .2s ease;
 }
 
-.subworld img {
+#subworld img {
 	max-width: 90%;
 	max-height: 50vh;
 	display: block;
 	margin: 20px auto;
 }
 
-.subworld .initial {
+#subworld .initial {
 	color: #fff;
 	background: #000;
 	width: 16.66vw;
@@ -146,7 +147,7 @@ body {
 	left: 50vw;
 }
 
-.subworld .bubamara {
+#subworld .bubamara {
 	width: 16.67vw;
 	position: fixed;
 	right: 0;
@@ -156,7 +157,7 @@ body {
 	background-position: center;
 }
 
-.subworld .section {
+#subworld .section {
 	width: 16.66vw;
 	position: fixed;
 	left: 66.66vw;
@@ -165,7 +166,7 @@ body {
 	height: 16.66vw;
 }
 
-.subworld .section img {
+#subworld .section img {
 	width: 100%;
 	max-width: 100%;
 	margin: 0;

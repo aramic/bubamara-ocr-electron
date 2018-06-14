@@ -43,7 +43,8 @@ function readFile(filepath) {
 
         client.invoke("bubamaraGen", filepath, (error, res) => {
         	if(error) {
-        		console.error(error)
+                selectFile.innerHTML = "Mysteriously, BUBAMARA-OCR was unable to read that image. Perhaps you can try a different one?"
+                selectFile.classList.remove('loading')
         	} else {
         		output = res.toString('utf8')
                 let inputImg = filepath
@@ -66,7 +67,8 @@ function formatInterp(inputImg, output) {
         let cardDir = path.resolve(__dirname, './assets/img/cards/' + letter + '/')   
         let sectImg = path.resolve(__dirname, './python/cache/' + fileTitle + '/' + i + '.jpg')
 
-        interpretation += '<div class=\'letter ' + letter + '\'>' + letter + '<div class=\'subworld\'><img src=\'' + randomImage(cardDir) + '\'><div class=\'initial\'>' + letter + '</div><div class=\'bubamara\'></div><div class=\'section\'><img src=\'' + sectImg + '\'></div></div></div> '
+        //interpretation += '<div class=\'letter ' + letter + '\'>' + letter + '<div class=\'subworld\'><img src=\'' + randomImage(cardDir) + '\'><div class=\'initial\'>' + letter + '</div><div class=\'bubamara\'></div><div class=\'section\'><img src=\'' + sectImg + '\'></div></div></div> '
+        interpretation += '<div class=\'letter\' data-letter=\'' + letter + '\' data-section=\'' + sectImg + '\' data-card=\'' + randomImage(cardDir) + '\'>' + letter + '</div> '
         if( i == interpArray.length - 1 ) {
             makeInterpWin(fileTitle, interpretation)
         }
@@ -141,11 +143,28 @@ function letterNavigate(win) {
         let letters = document.getElementsByClassName('letter')
         letters[0].classList.add('active')
 
+        function updateSubWorld(activeLetter) {
+            let letter = activeLetter.getAttribute('data-letter')
+            let section = activeLetter.getAttribute('data-section')
+            let card = activeLetter.getAttribute('data-card')
+            let subworld = document.getElementById('subworld')
+            console.log(letter)
+            console.log(section)
+            console.log(card)
+            document.getElementById('image').src = card
+            document.getElementById('initial').innerHTML = letter
+            document.getElementById('subworld').className = letter
+            document.getElementById('section').src = section
+        }
+
+        updateSubWorld(letters[0])        
+
         for (let i = 0; i < letters.length; i++) {
             letters[i].addEventListener('mouseover', function() {
                 let active = document.getElementsByClassName('active')
                 active[0].classList.remove('active')                                
                 letters[i].classList.add('active')
+                updateSubWorld(letters[i])
             })
         }
 
@@ -160,7 +179,9 @@ function letterNavigate(win) {
                     }
                 }
                 letters[index].classList.remove('active')                                
-                letters[index-1].classList.add('active')                                                
+                letters[index-1].classList.add('active')  
+                updateSubWorld(letters[index-1])
+                                              
 
                 break;
 
@@ -173,7 +194,8 @@ function letterNavigate(win) {
                     }
                 }
                 letters[index].classList.remove('active')                                
-                letters[index+1].classList.add('active')                                                
+                letters[index+1].classList.add('active')
+                updateSubWorld(letters[index+1])
 
                 break;
 
