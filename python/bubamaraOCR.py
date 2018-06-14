@@ -10,6 +10,9 @@ imgTrain = os.path.abspath('./assets/img/calibration/tablet.jpg')
 xPixels = 100L
 yPixels = 100L
 
+maxWidth = 4000L
+maxHeight = 2000L
+
 def bubamaraGen(testImage):
 
   # Set up the training image.
@@ -26,7 +29,26 @@ def bubamaraGen(testImage):
 
   #compute size of input image:
   print "inputImage Size: " + str(input_img.shape[0]) + "x" + str(input_img.shape[1])
-  
+
+  # only shrink if img is bigger than required
+  if maxHeight < input_img.shape[1] or maxWidth < input_img.shape[0]:
+      # get scaling factor
+      scaling_factor = maxHeight / float(input_img.shape[1])
+      if maxWidth/float(input_img.shape[0]) < scaling_factor:
+          scaling_factor = maxWidth / float(input_img.shape[0])
+      # resize image
+      input_img = cv2.resize(input_img, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+
+  # only shrink if img is bigger than required
+  if yPixels > input_img.shape[1] or xPixels > input_img.shape[0]:
+      # get scaling factor
+      scaling_factor = float(input_img.shape[1]) / yPixels
+      if float(input_img.shape[0])/xPixels > scaling_factor:
+          scaling_factor = float(input_img.shape[0])/xPixels
+      # resize image
+      input_img = cv2.resize(input_img, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+
+
   #now figure out how many 30x30 boxes fill the image & crop to that size:
   xCount = input_img.shape[0] / xPixels
   yCount = input_img.shape[1] / yPixels
@@ -83,7 +105,7 @@ def bubamaraGen(testImage):
     l = abeceda[x]                                       # letter for specific image seg
     xLoc = index[0] * xPixels                            # X pixel of image seg
     yLoc = index[1] * yPixels                            # Y pixel of image seg
-    imgSection = img2[xLoc:xLoc+100, yLoc:yLoc+100] # Crop from x, y, w, h -> xLoc, yLoc, 100,100
+    imgSection = input_img[xLoc:xLoc+100, yLoc:yLoc+100] # Crop from x, y, w, h -> xLoc, yLoc, 100,100
     imageLocName = imagesPath + '/' + str(incr) + ".jpg"
     cv2.imwrite(imageLocName, imgSection)
     incr += 1
