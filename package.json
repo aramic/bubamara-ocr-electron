@@ -17,7 +17,7 @@
     "OCR"
   ],
   "author": "Adriana Ramic",
-  "license": "CC0-1.0",
+  "license": "No license",
   "devDependencies": {
     "electron": "1.7.6",
     "electron-packager": "^9.0.1",
