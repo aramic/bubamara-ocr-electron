@@ -6,19 +6,31 @@
 // renderer.js
 
 const zerorpc = require("zerorpc")
-let client = new zerorpc.Client()
-client.connect("tcp://127.0.0.1:4242")
-
+const client = new zerorpc.Client()
 const path = require('path')
 const fs = require('fs')
-const remote = require('electron').remote;
 const electron = require('electron')
-const BrowserWindow = remote.BrowserWindow;
+const remote = require('electron').remote
 const {dialog} = require('electron').remote
+const BrowserWindow = remote.BrowserWindow
 const selectFile = document.getElementById('select-file')
 const key = document.getElementById('key')
+const storage = remote.app.getPath('userData')
+const junk = require('junk');
 
-/* Read the file */
+// Start the server for Python and confirm it is running
+
+client.connect("tcp://127.0.0.1:4242")
+client.invoke("echo", "server ready", (err, res) => {
+  if(err || res !== 'server ready') {
+    console.error(err)
+  } else {
+    console.log("server is ready")
+  }
+})
+
+// Read the file
+
 selectFile.addEventListener('click',function(){
     dialog.showOpenDialog({ filters: [
         { name: 'Images', extensions: ['jpg', 'png', 'gif'] }]}, 
@@ -35,37 +47,39 @@ selectFile.addEventListener('click',function(){
 function readFile(filepath) {
     fs.readFile(filepath, 'utf-8', function (err, data) {
         if(err){
-            alert("An error ocurred reading the file :" + err.message)
+            console.log("An error ocurred reading the file :" + err.message)
             return
         }
         selectFile.classList.add('loading')
         selectFile.innerHTML = "Loading <span class=\'ellipses\'><span>.</span><span>.</span><span>.</span></span>";
 
-        client.invoke("bubamaraGen", filepath, (error, res) => {
-        	if(error) {
+        client.invoke("bubamaraGen", filepath, storage, (error, res) => {
+            if(error) {
+                console.log(error)
                 selectFile.innerHTML = "Mysteriously, BUBAMARA-OCR was unable to read that image. Perhaps you can try a different one?"
                 selectFile.classList.remove('loading')
-        	} else {
-        		output = res.toString('utf8')
+            } else {
+                output = res.toString('utf8')
                 let inputImg = filepath
                 formatInterp(inputImg, output)
-        	}
+            }
         })
     })
 }
 
+// Format the interpretation
+
 function formatInterp(inputImg, output) {
 
-    let interpArray = output.split(' ')
     let interpretation = ''
-    let nameString = inputImg;
-    let fileTitle = nameString.split("/").pop();
-
+    let fileTitle = inputImg.split("/").pop()
+    let interpArray = output.split(" ")
+    interpArray.pop()
 
     for (let i = 0; i < interpArray.length; i++) {        
         let letter = interpArray[i]
         let cardDir = path.resolve(__dirname, './assets/img/cards/' + letter + '/')   
-        let sectImg = path.resolve(__dirname, './python/cache/' + fileTitle + '/' + i + '.jpg')
+        let sectImg = path.resolve(__dirname, storage + '/cache/' + fileTitle + '/' + i + '.jpg')
 
         //interpretation += '<div class=\'letter ' + letter + '\'>' + letter + '<div class=\'subworld\'><img src=\'' + randomImage(cardDir) + '\'><div class=\'initial\'>' + letter + '</div><div class=\'bubamara\'></div><div class=\'section\'><img src=\'' + sectImg + '\'></div></div></div> '
         interpretation += '<div class=\'letter\' data-letter=\'' + letter + '\' data-section=\'' + sectImg + '\' data-card=\'' + randomImage(cardDir) + '\'>' + letter + '</div> '
@@ -81,18 +95,9 @@ function randomImage(dir) {
       return path.join(dir, file);
     });
 
+    dirs.filter(junk.not)  
+
     return dirs[Math.floor(Math.random() * (dirs.length-1))]
-}
-
-function randomScreenPosition(winWidth, winHeight) {
-    const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
-
-    let maxX = width - winWidth
-    let maxY = height - winHeight
-
-    let randomX = Math.floor(Math.random() * (maxX - 1))
-    let randomY = Math.floor(Math.random() * (maxY - 1))
-    return {randomX, randomY}
 }
 
 /* Display the interpretation */
@@ -137,7 +142,7 @@ function makeInterpWin(fileTitle, interpretation) {
 
 }
 
-/* Navigate through the letters */
+// Navigate through the letters and display their metadata
 function letterNavigate(win) {
     win.webContents.executeJavaScript(`
         let letters = document.getElementsByClassName('letter')
@@ -178,10 +183,11 @@ function letterNavigate(win) {
                         index = i
                     }
                 }
-                letters[index].classList.remove('active')                                
-                letters[index-1].classList.add('active')  
-                updateSubWorld(letters[index-1])
-                                              
+                if( index > 0) {                
+                    letters[index].classList.remove('active')                                
+                    letters[index-1].classList.add('active')  
+                    updateSubWorld(letters[index-1])
+                }     
 
                 break;
 
@@ -193,9 +199,12 @@ function letterNavigate(win) {
                         index = i
                     }
                 }
-                letters[index].classList.remove('active')                                
-                letters[index+1].classList.add('active')
-                updateSubWorld(letters[index+1])
+
+                if( index < (letters.length - 1)) {
+                    letters[index].classList.remove('active')                                
+                    letters[index+1].classList.add('active')
+                    updateSubWorld(letters[index+1])
+                }
 
                 break;
 
@@ -208,7 +217,19 @@ function letterNavigate(win) {
     `)
 }
 
-/* Display the key */
+// Get a random position within screen bounds
+function randomScreenPosition(winWidth, winHeight) {
+    const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+
+    let maxX = width - winWidth
+    let maxY = height - winHeight
+
+    let randomX = Math.floor(Math.random() * (maxX - 1))
+    let randomY = Math.floor(Math.random() * (maxY - 1))
+    return {randomX, randomY}
+}
+
+// Display the key
 key.addEventListener('click', function() {
 
     const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize

@@ -1,0 +1,302 @@
+@charset "utf-8";
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: #ff0000;
+	font-family: Arial;
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 16px;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+#welcome,
+#select-file,
+#key {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: 0.2s ease;
+	user-select: none;
+	padding: 20px;
+	text-align: center;
+}
+
+#welcome {
+	background: #888;
+	height: 12vh;
+}
+
+#select-file {
+	height: 88vh;
+}
+
+#welcome:hover {
+	background: #000;
+	color: #888;
+}
+
+#key:hover {
+	background: #000;
+	color: #ccc;
+}
+
+#select-file:hover {
+	background: #000;
+	color: #ff0000;
+}
+
+#key {
+	background: #fff;
+	height: 12vh;
+}
+
+.loading {
+  animation: pulse 0.75s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #ff0000;
+    color: #000000;
+  }
+  50% {
+    background-color: #000000;
+    color: #ff0000;  	
+  }
+  100% {
+    background-color: #ff0000;
+    color: #000000;
+  }
+}
+
+
+.interpWin body {
+	background: #fff;
+	text-align: justify;
+	font-weight: 500;
+	font-size: 10px;
+	line-height: 10px;
+	word-spacing: -10px;
+}
+
+#interpretation {
+	position: fixed;
+	left: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	width: 50vw;
+	height: 100vh;
+	padding: 5vw;
+	border-right: 1px solid;
+	background: #fff;
+	font-size: 1.3vw;
+	line-height: 1.1;
+}
+
+.letter {
+	display: inline-block;
+	cursor: -webkit-zoom-in;
+	padding: 0px 10px 6px 0;
+}
+
+.letter.active {
+	color: #ff0000;
+}
+
+.letter.active #subworld {
+	opacity: 1;
+}
+
+#subworld {
+	position: fixed;
+	left: 50vw;
+	top: 0;
+	pointer-events: none;
+	width: 50vw;
+	background: #fff;
+	height: 400px;
+	transition: opacity .2s ease;
+}
+
+#subworld img {
+	max-width: 90%;
+	max-height: 50vh;
+	display: block;
+	margin: 20px auto;
+}
+
+#subworld .initial {
+	color: #fff;
+	background: #000;
+	width: 16.66vw;
+	height: 16.66vw;
+	font-size: 4.75vw;
+	line-height: 6vw;
+	text-align: center;
+	position: fixed;
+	bottom: 0;
+	padding: 5.3vw;
+	left: 50vw;
+}
+
+#subworld .bubamara {
+	width: 16.67vw;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	height: 16.66vw;
+	background-size: cover;
+	background-position: center;
+}
+
+#subworld .section {
+	width: 16.66vw;
+	position: fixed;
+	left: 66.66vw;
+	bottom: 0;
+	overflow: hidden;
+	height: 16.66vw;
+}
+
+#subworld .section img {
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
+	height: auto;
+}
+
+.A .bubamara {
+	background-image: url('../img/key/01.jpg');
+}
+
+.B .bubamara {
+	background-image: url('../img/key/02.jpg');
+}
+
+.C .bubamara {
+	background-image: url('../img/key/03.jpg');
+}
+
+.Č .bubamara {
+	background-image: url('../img/key/04.jpg');
+}
+
+.Ć .bubamara {
+	background-image: url('../img/key/05.jpg');
+}
+
+.D .bubamara {
+	background-image: url('../img/key/06.jpg');
+}
+
+.DŽ .bubamara {
+	background-image: url('../img/key/07.jpg');
+}
+
+.Đ .bubamara {
+	background-image: url('../img/key/08.jpg');
+}
+
+.E .bubamara {
+	background-image: url('../img/key/09.jpg');
+}
+
+.F .bubamara {
+	background-image: url('../img/key/10.jpg');
+}
+
+.G .bubamara {
+	background-image: url('../img/key/11.jpg');
+}
+
+.H .bubamara {
+	background-image: url('../img/key/12.jpg');
+}
+
+.I .bubamara {
+	background-image: url('../img/key/13.jpg');
+}
+
+.J .bubamara {
+	background-image: url('../img/key/14.jpg');
+}
+
+.K .bubamara {
+	background-image: url('../img/key/15.jpg');
+}
+
+.L .bubamara {
+	background-image: url('../img/key/16.jpg');
+}
+
+.LJ .bubamara {
+	background-image: url('../img/key/17.jpg');
+}
+
+.M .bubamara {
+	background-image: url('../img/key/18.jpg');
+}
+
+.N .bubamara {
+	background-image: url('../img/key/19.jpg');
+}
+
+.NJ .bubamara {
+	background-image: url('../img/key/20.jpg');
+}
+
+.O .bubamara {
+	background-image: url('../img/key/21.jpg');
+}
+
+.P .bubamara {
+	background-image: url('../img/key/22.jpg');
+}
+
+.R .bubamara {
+	background-image: url('../img/key/23.jpg');
+}
+
+.S .bubamara {
+	background-image: url('../img/key/24.jpg');
+}
+
+.Š  .bubamara {
+	background-image: url('../img/key/25.jpg');
+}
+
+.T .bubamara {
+	background-image: url('../img/key/26.jpg');
+}
+
+.U .bubamara {
+	background-image: url('../img/key/27.jpg');
+}
+
+.V .bubamara {
+	background-image: url('../img/key/28.jpg');
+}
+
+.Z .bubamara {
+	background-image: url('../img/key/29.jpg');
+}
+
+.Ž .bubamara {
+	background-image: url('../img/key/30.jpg');
+}
+
+@media all and (max-width:700px) {
+	#interpretation {
+		font-size: 10px;
+		padding: 20px;
+	}
+}

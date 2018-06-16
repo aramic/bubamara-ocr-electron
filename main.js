@@ -3,7 +3,9 @@
 electron = require('electron')
 app = electron.app
 BrowserWindow = electron.BrowserWindow
+fs = require('fs-extra')
 path = require('path')
+cache = app.getPath('userData') + '/cache/'
 
 let mainWindow = null
 const createWindow = () => {
@@ -23,6 +25,7 @@ const createWindow = () => {
 }
 app.on('ready', createWindow)
 app.on('window-all-closed', () => {
+  fs.remove(cache)
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -33,12 +36,5 @@ app.on('activate', () => {
   }
 })
 
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
-
 // Start Python processes
 require('./pyproc.js')
-
-// Select image and analyze with BubamaraOCR.py
-//require('./imgselect.js')
