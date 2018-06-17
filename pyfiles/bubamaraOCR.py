@@ -7,15 +7,11 @@ abeceda = ['A', 'B', 'C', 'Č', 'Ć', 'D', 'DŽ', 'Đ', 'E', 'F', 'G', 'H', 'I',
 imgTrain = os.path.abspath('./assets/img/calibration/tablet.jpg')
 
 #pixel size for input image:
-xPixels = 50L
-yPixels = 50L
+xPixels = 100L
+yPixels = 100L
 xCalibWidth = float(xPixels * 5)
 
-maxWidth = 2000L
-maxHeight = 2000L
-
 def bubamaraGen(testImage, storage):
-
   # Set up the training image.
   # It is an alphabetical tablet of ladybugs.
   trainImage = cv2.imread(imgTrain)
@@ -24,30 +20,22 @@ def bubamaraGen(testImage, storage):
   img2 = cv2.imread(testImage)
   input_name = os.path.basename(testImage)
 
-  input_img = cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)
   # Make the input image the same size as the training image.
   # input_img = cv2.resize(input_img, (bubamara.shape[0],bubamara.shape[1]), interpolation = cv2.INTER_AREA)
 
   #compute size of input image:
-  print "inputImage Size: " + str(input_img.shape[0]) + "x" + str(input_img.shape[1])
-
-  # only shrink if img is bigger than required
-  if maxHeight < input_img.shape[1] or maxWidth < input_img.shape[0]:
-      # get scaling factor
-      scaling_factor = maxHeight / float(input_img.shape[1])
-      if maxWidth/float(input_img.shape[0]) < scaling_factor:
-          scaling_factor = maxWidth / float(input_img.shape[0])
-      # resize image
-      input_img = cv2.resize(input_img, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+  print "inputImage Size: " + str(img2.shape[0]) + "x" + str(img2.shape[1])
 
   # only upscale if img is smaller than required
-  if yPixels > input_img.shape[1] or xPixels > input_img.shape[0]:
+  if yPixels > img2.shape[1] or xPixels > img2.shape[0]:
       # get scaling factor
-      scaling_factor = float(input_img.shape[1]) / yPixels
-      if float(input_img.shape[0])/xPixels > scaling_factor:
-          scaling_factor = float(input_img.shape[0])/xPixels
+      scaling_factor = yPixels / float(img2.shape[1])
+      if float(img2.shape[0])/xPixels > scaling_factor:
+          scaling_factor = xPixels / float(img2.shape[0])
       # resize image
-      input_img = cv2.resize(input_img, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+      img2 = cv2.resize(img2, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+
+  input_img = cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)
 
   # Check calibration image against desired pixel dimensions and resize if necessary
   if xCalibWidth < bubamara.shape[0] or xCalibWidth > bubamara.shape[0]:
@@ -101,7 +89,7 @@ def bubamaraGen(testImage, storage):
   
     #make new directory for images 
   # imagesPath = os.path.abspath('./pyfiles/cache/' + input_name)
-  imagesPath = os.path.abspath(storage + '/cache/' + input_name)
+  imagesPath = os.path.abspath(storage + '/outputCache/' + input_name)
   if not os.path.exists(imagesPath):
     os.makedirs(imagesPath)
   
@@ -114,7 +102,7 @@ def bubamaraGen(testImage, storage):
     l = abeceda[x]                                       # letter for specific image seg
     xLoc = index[0] * xPixels                            # X pixel of image seg
     yLoc = index[1] * yPixels                            # Y pixel of image seg
-    imgSection = img2[xLoc:xLoc+100, yLoc:yLoc+100] # Crop from x, y, w, h -> xLoc, yLoc, 100,100
+    imgSection = img2[xLoc:xLoc+xPixels, yLoc:yLoc+yPixels] # Crop from x, y, w, h -> xLoc, yLoc, 100,100
     imageLocName = imagesPath + '/' + str(incr) + ".jpg"
     cv2.imwrite(imageLocName, imgSection)
     incr += 1

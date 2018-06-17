@@ -16,7 +16,9 @@ const BrowserWindow = remote.BrowserWindow
 const selectFile = document.getElementById('select-file')
 const key = document.getElementById('key')
 const storage = remote.app.getPath('userData')
-const junk = require('junk');
+const junk = require('junk')
+const sharp = require('sharp')
+const sF = require('sanitize-filename')
 
 // Start the server for Python and confirm it is running
 
@@ -53,33 +55,61 @@ function readFile(filepath) {
         selectFile.classList.add('loading')
         selectFile.innerHTML = "Loading <span class=\'ellipses\'><span>.</span><span>.</span><span>.</span></span>";
 
-        client.invoke("bubamaraGen", filepath, storage, (error, res) => {
-            if(error) {
-                console.log(error)
-                selectFile.innerHTML = "Mysteriously, BUBAMARA-OCR was unable to read that image. Perhaps you can try a different one?"
-                selectFile.classList.remove('loading')
-            } else {
-                output = res.toString('utf8')
-                let inputImg = filepath
-                formatInterp(inputImg, output)
-            }
-        })
+        newImg = readyImage(filepath)
+        //console.log("filepath is " + filepath)
+        //console.log("New image is " + newImg)
+
     })
+}
+
+function readyImage(image) {
+    console.log("image is " + image)
+    let fileTitle = image.split("/").pop()
+    const dir = storage + '/inputCache/'
+    let newfilepath = dir + fileTitle.replace(/\./g, "-") + '.jpg'
+
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+    }
+
+    sharp(image)
+        .resize(4000,4000)
+        .max()
+        .withoutEnlargement(true)
+        .jpeg({
+            quality: 100
+        })
+        .toFile(newfilepath)
+        .then( function() {
+            client.invoke("bubamaraGen", newfilepath, storage, (error, res) => {
+                if(error) {
+                    console.log(error)
+                    selectFile.innerHTML = "Mysteriously, BUBAMARA-OCR was unable to read that image. Perhaps you can try a different one?"
+                    selectFile.classList.remove('loading')
+                } else {
+                    output = res.toString('utf8')
+                    let inputImg = newfilepath
+                    formatInterp(inputImg, output, fileTitle)
+                }
+            })
+        })
+
+    return dir + fileTitle + '.jpg'
 }
 
 // Format the interpretation
 
-function formatInterp(inputImg, output) {
+function formatInterp(inputImg, output, fileTitle) {
 
     let interpretation = ''
-    let fileTitle = inputImg.split("/").pop()
+    let sectTitle = inputImg.split("/").pop()
     let interpArray = output.split(" ")
     interpArray.pop()
 
     for (let i = 0; i < interpArray.length; i++) {        
         let letter = interpArray[i]
         let cardDir = path.resolve(__dirname, './assets/img/cards/' + letter + '/')   
-        let sectImg = path.resolve(__dirname, storage + '/cache/' + fileTitle + '/' + i + '.jpg')
+        let sectImg = path.resolve(__dirname, storage + '/outputCache/' + sectTitle + '/' + i + '.jpg')
 
         //interpretation += '<div class=\'letter ' + letter + '\'>' + letter + '<div class=\'subworld\'><img src=\'' + randomImage(cardDir) + '\'><div class=\'initial\'>' + letter + '</div><div class=\'bubamara\'></div><div class=\'section\'><img src=\'' + sectImg + '\'></div></div></div> '
         interpretation += '<div class=\'letter\' data-letter=\'' + letter + '\' data-section=\'' + sectImg + '\' data-card=\'' + randomImage(cardDir) + '\'>' + letter + '</div> '
@@ -94,8 +124,9 @@ function randomImage(dir) {
     const dirs = fs.readdirSync(dir).map(file => {
       return path.join(dir, file);
     });
-
-    dirs.filter(junk.not)  
+    //console.log(dirs)
+    dirs.filter(junk.not)
+    //console.log(dirs)
 
     return dirs[Math.floor(Math.random() * (dirs.length-1))]
 }
@@ -153,9 +184,6 @@ function letterNavigate(win) {
             let section = activeLetter.getAttribute('data-section')
             let card = activeLetter.getAttribute('data-card')
             let subworld = document.getElementById('subworld')
-            console.log(letter)
-            console.log(section)
-            console.log(card)
             document.getElementById('image').src = card
             document.getElementById('initial').innerHTML = letter
             document.getElementById('subworld').className = letter

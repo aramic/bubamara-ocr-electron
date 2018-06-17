@@ -5,7 +5,8 @@ app = electron.app
 BrowserWindow = electron.BrowserWindow
 fs = require('fs-extra')
 path = require('path')
-cache = app.getPath('userData') + '/cache/'
+outputCache = app.getPath('userData') + '/outputCache/'
+inputCache = app.getPath('userData') + '/inputCache/'
 
 let mainWindow = null
 const createWindow = () => {
@@ -25,12 +26,15 @@ const createWindow = () => {
 }
 app.on('ready', createWindow)
 app.on('window-all-closed', () => {
-  fs.remove(cache)
+  fs.remove(inputCache)
+  fs.remove(outputCache)
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 app.on('activate', () => {
+  fs.remove(inputCache)
+  fs.remove(outputCache)  
   if (mainWindow === null) {
     createWindow()
   }
