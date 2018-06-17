@@ -6,10 +6,10 @@ import zerorpc
 
 class BubamaraAPI(object):
 
-    def bubamaraGen(self, file, storage):
+    def bubamaraGen(self, file, storage, calibration):
 #        """based on the input text, return the int result"""
         try:
-            return real_bubamara(file, storage)
+            return real_bubamara(file, storage, calibration)
         except Exception as e:
             return 0.0
     def echo(self, text):

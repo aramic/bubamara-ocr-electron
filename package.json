@@ -7,8 +7,13 @@
     "start": "electron ."
   },
   "dependencies": {
+    "electron": "1.7.6",    
     "electron-window-manager": "^1.0.6",
-    "zerorpc": "git+https://github.com/fyears/zerorpc-node.git"
+    "zerorpc": "git+https://github.com/fyears/zerorpc-node.git",
+    "fs-extra": "^6.0.1",
+    "junk": "^2.1.0",
+    "sanitize-filename": "^1.6.1",
+    "sharp": "^0.20.3"    
   },
   "keywords": [
     "Bubamara",
@@ -19,11 +24,7 @@
   "license": "No license",
   "devDependencies": {
     "electron": "1.7.6",
-    "electron-packager": "^9.0.1",
-    "electron-rebuild": "^1.7.3",
-    "fs-extra": "^6.0.1",
-    "junk": "^2.1.0",
-    "sanitize-filename": "^1.6.1",
-    "sharp": "^0.20.3"
+    "electron-packager": "9.0.1",
+    "electron-rebuild": "^1.7.3"
   }
 }

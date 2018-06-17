@@ -10,14 +10,17 @@ inputCache = app.getPath('userData') + '/inputCache/'
 
 let mainWindow = null
 const createWindow = () => {
-  mainWindow = new BrowserWindow({width: 320, height: 400})
+  mainWindow = new BrowserWindow({
+    width: 320, 
+    height: 400,
+    webPreferences: {
+      devTools: false
+    }    
+  })
   mainWindow.loadURL(require('url').format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true,
-    webPreferences: {
-      devTools: false
-    }
+    slashes: true
   }))
   mainWindow.webContents.openDevTools()
   mainWindow.on('closed', () => {

@@ -63,10 +63,11 @@ function readFile(filepath) {
 }
 
 function readyImage(image) {
-    console.log("image is " + image)
     let fileTitle = image.split("/").pop()
     const dir = storage + '/inputCache/'
     let newfilepath = dir + fileTitle.replace(/\./g, "-") + '.jpg'
+    const calibration = path.resolve(__dirname, './assets/img/calibration/tablet.jpg')   
+    console.log(calibration)
 
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
@@ -81,7 +82,7 @@ function readyImage(image) {
         })
         .toFile(newfilepath)
         .then( function() {
-            client.invoke("bubamaraGen", newfilepath, storage, (error, res) => {
+            client.invoke("bubamaraGen", newfilepath, storage, calibration, (error, res) => {
                 if(error) {
                     console.log(error)
                     selectFile.innerHTML = "Mysteriously, BUBAMARA-OCR was unable to read that image. Perhaps you can try a different one?"
@@ -93,8 +94,6 @@ function readyImage(image) {
                 }
             })
         })
-
-    return dir + fileTitle + '.jpg'
 }
 
 // Format the interpretation
